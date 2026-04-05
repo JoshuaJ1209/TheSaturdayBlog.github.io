@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Saturday Blog - Article</title>
+  <style>
+    /* Keeps all your core branding and styles */
+    :root {
+      --paper: #f5f1e8;
+      --paper-deep: #ece6d8;
+      --ink: #111111;
+      --soft-ink: #3c3c3c;
+      --line: rgba(17, 17, 17, 0.16);
+      --line-strong: rgba(17, 17, 17, 0.3);
+      --max: 1160px;
+      --serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", serif;
+      --sans: Arial, Helvetica, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--serif);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0,0,0,0.035), transparent 24%),
+        radial-gradient(circle at 80% 12%, rgba(0,0,0,0.03), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,0.22), rgba(0,0,0,0.015)),
+        repeating-linear-gradient(0deg, rgba(0,0,0,0.012) 0px, rgba(0,0,0,0.012) 1px, transparent 1px, transparent 3px),
+        var(--paper);
+      line-height: 1.72;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .site-shell {
+      width: min(calc(100% - 28px), var(--max));
+      margin: 18px auto;
+      background: rgba(255,255,255,0.28);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(1px);
+    }
+
+    .topbar {
+      border-bottom: 1px solid var(--line-strong);
+      padding: 14px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      background: rgba(245, 241, 232, 0.92);
+      backdrop-filter: blur(6px);
+      z-index: 20;
+    }
+
+    .publication-note {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--soft-ink);
+    }
+
+    .nav {
+      display: flex;
+      gap: 18px;
+      font-size: 0.96rem;
+    }
+
+    .nav a {
+      position: relative;
+      padding-bottom: 2px;
+    }
+    .nav a::after {
+      content: "";
+      position: absolute; left: 0; bottom: 0; width: 100%; height: 1px;
+      background: var(--ink); transform: scaleX(0); transition: transform 0.2s ease; transform-origin: left;
+    }
+    .nav a:hover::after { transform: scaleX(1); }
+
+    .blog-kicker {
+      font-family: var(--sans); text-transform: uppercase; letter-spacing: 0.15em;
+      font-size: 0.73rem; color: var(--soft-ink); margin-bottom: 12px;
+    }
+
+    /* Article Specific Styles */
+    .article-page {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .article-header {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 50px 24px 30px;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .article-header h1 {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      margin: 0 0 14px;
+      line-height: 1.03;
+      letter-spacing: -0.03em;
+      font-weight: 700;
+    }
+
+    .article-subtitle {
+      margin: 0 auto;
+      max-width: 720px;
+      color: var(--soft-ink);
+      font-size: 1.05rem;
+    }
+
+    .article-byline {
+      margin-top: 24px;
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--soft-ink);
+    }
+
+    .article-body {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      column-count: 2;
+      column-gap: 44px;
+      column-rule: 1px solid var(--line);
+      font-size: 1.05rem;
+    }
+
+    .article-body p {
+      margin: 0 0 18px;
+      break-inside: avoid;
+    }
+
+    .article-body h3 {
+      font-size: 1.6rem;
+      margin: 24px 0 12px;
+      font-family: var(--sans);
+      letter-spacing: -0.02em;
+      break-after: avoid;
+    }
+
+    .dropcap:first-letter {
+      float: left;
+      font-size: 3.4rem;
+      line-height: 0.9;
+      padding-right: 8px;
+      margin-top: 2px;
+      font-weight: 700;
+    }
+
+    .article-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 24px 0 28px;
+      break-inside: avoid;
+    }
+
+    /* Rating Box Styles */
+    .rating-wrap { max-width: 900px; margin: 0 auto; padding: 0 24px 50px; }
+    .rating-box { border: 1px solid var(--line-strong); padding: 30px; background: rgba(255,255,255,0.34); }
+    .rating-title { margin: 0 0 8px; font-size: 1.4rem; }
+    .rating-text { margin: 0 0 18px; color: var(--soft-ink); }
+    .rating-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+    .rating-button {
+      width: 44px; height: 44px; border: 1px solid var(--line-strong); background: rgba(255,255,255,0.5);
+      font-family: var(--serif); font-size: 1rem; cursor: pointer; transition: 0.15s ease;
+    }
+    .rating-button:hover, .rating-button.active { background: #111; color: #fff; transform: translateY(-2px); }
+    .comment-box { display: grid; gap: 10px; }
+    .comment-box textarea {
+      width: 100%; min-height: 110px; resize: vertical; border: 1px solid var(--line-strong);
+      background: rgba(255,255,255,0.48); font-family: var(--serif); font-size: 1rem; padding: 12px 14px;
+    }
+    .comment-box button {
+      width: fit-content; padding: 11px 18px; border: 1px solid #111; background: #111; color: #fff;
+      font-family: var(--sans); text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.78rem; cursor: pointer;
+    }
+
+    .footer {
+      border-top: 1px solid var(--line-strong); text-align: center; padding: 24px 18px;
+      font-family: var(--sans); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.72rem; color: var(--soft-ink);
+    }
+
+    @media (max-width: 820px) {
+      .article-body { column-count: 1; column-rule: 0; }
+    }
+    @media (max-width: 640px) {
+      .site-shell { width: 100%; margin: 0; border: none; }
+      .article-header h1 { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="publication-note">Independent weekly publication</div>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="index.html">← Back to Home</a>
+      </nav>
+    </header>
+
+    <section class="article-page" id="blog-one">
+      <div class="article-header">
+        <div class="blog-kicker">Aerospace & Engineering</div>
+        <h1>The Hidden Digital Crew Member: How AI Is Being Integrated Into Space Missions</h1>
+        <p class="article-subtitle">
+          Whilst the world celebrates the successful launch of Artemis II, the silent ‘engineering’ behind the scenes also deserves the spotlight.
+        </p>
+        <div class="article-byline">By Joshua Jacob • April 4, 2026</div>
+      </div>
+
+      <div class="article-body">
+        <p class="dropcap">As AI becomes more sophisticated, and its use more rampant it is only logical that its capabilities would be utilized in high stakes commercial sectors– notably aerospace. Whilst the world celebrates the successful launch of Artemis II (the first crewed lunar flyby in over half a century) the silent ‘engineering’ behind the scenes also deserves the spotlight. From biometric wearables monitoring crew vitals to deep- learning anomaly detection in the Orion spaceship, AI is becoming more than just a tool; it’s becoming a mission critical ‘crew member’. These advancements mean more than just technical milestones– they represent the foundation of all space exploration missions to come.</p>
+
+        <div class="article-divider"></div>
+        
+        <h3>A Brief History</h3>
+        <p>Whilst unknown to most, the concept of utilising AI in space isn’t anything recent. In fact, its use spans back over 25 years, with its first notable introduction coming in the late 1990s. Launched in 1998, NASA’s Deep Space 1(DS1) mission featured the “Remote Agent” software, which handled spacecraft systems, scheduled tasks and diagnosed failures without the need for human intervention. Whilst relatively basic compared to today's standards, the “Remote agent” was a pivotal moment in autonomous engineering. It not only proved that a spacecraft could ‘think’ but that it could learn to adapt and re-formulate mission plans in real time.</p>
+
+        <p>Fast forwarding to the 2000’s, AI was once again utilised, however this time on the surface of Mars. NASA’s Spirit and Opportunity Mars Exploration Rovers(MER) made use of advanced AI systems, which allowed them to analyse images and plan their routes, avoiding obstacles as they navigated the rocky surface of Mars. Going off of this, the subsequent generation of rovers – specifically Curiosity and Perseverance – made use of more advanced technologies, namely AEGIS. AEGIS(Autonomous Exploration for Gathering Increased Science) leverages a number of AI technologies, such as Deep Learning, Neural Networks and Computer vision which enable it to conduct research, as well as analyse the safety of its surroundings with minimal human intervention. This transition from simple machine learning to complex independent analysis represents a fundamental leap in engineering. A leap that is now being used in Artemis II, only this time to assist with the even more volatile variables of human life support and real time lunar navigation.</p>
+
+        <div class="article-divider"></div>
+
+        <h3>Artemis II</h3>
+        <p>As discussed previously, Artemis II features a suite of AI tools designed to optimize operations and drastically reduce crew workload. A standout feature is the AI-Driven Optical Navigation (OpNav) system. Given that traditional GPS systems are redundant outside Earth’s orbit, maintaining a precise trajectory becomes a hurdle. Hence OpNav utilises a wide range of high resolution cameras to capture the Moon and Earth against the starfield; then, AI compares these images against preloaded star maps, allowing the system to independently determine both its location and velocity with precision.</p>
+
+        <p>The Orion capsule also introduces Callisto, an interactive voice interface co-developed by Lockheed Martin, Amazon and Cisco. Whilst built on the foundations of Alexa, Callisto is adapted to deep space, tailormade to function without the internet and instead the NASA Deep Space Network. By allowing astronauts to access telemetry data or receive detailed instructions via voice, Callisto gives a fresh perspective on the interactive systems reserved for science fiction alone. As Howard Hu, deputy Orion program manager, said, “Orion is already the most advanced spacecraft ever developed…voice activation technology could take it to the next level.”</p>
+
+        <p>The impact of AI extends far beyond the confines of the 10 day mission.In fact, it was instrumental to the production process as well. System Invariant Analysis Technology (SIAT), developed by the NEC corporation, performs intricate diagnostic checks of the spacecraft. Some of these tests include analysis of performance in the space environment, which allows for data gathering, giving a better understanding of how it functions in space. The efficiency gains were monumental.To be precise “If you were to ask a human to perform the same task…it would take them 240 years. SIAT does very quickly, say within an hour”, according to Kevin Woodward, Lockheed Martin Space.</p>
+
+        <p>Whilst surprising to some, the presence of ai extends to the crew themselves. Each crew member is equipped with the ARCHeR wristband, a bespoke wearable designed to monitor both movement and sleep patterns, giving scientists real-time data. As the crew becomes the furthest humans from Earth in history, ARCHeR provides scientists with a continuous stream of data on how deep-space radiation and microgravity affect circadian rhythms and cognitive rest. Therefore, understanding how they adapt to this new and hostile environment will be crucial to future space and interplanetary missions.</p>
+
+        <p>As Artemis continues with its historic mission, one thing has become clear: AI should no longer be viewed with skepticism, for AI is becoming an engineering necessity. By entrusting deep-space navigation to autonomy and production testing to systems like SIAT, we are doing more than just ensuring the safety of four astronauts; we are lowering the economic "barrier to entry" for exploration. We aren't just witnessing a mission; we are watching the deployment of the intelligent infrastructure that will eventually carry us to Mars and beyond.</p>
+      </div>
+
+      <div class="rating-wrap">
+        <div class="rating-box">
+          <h2 class="rating-title">Rate this essay</h2>
+          <p class="rating-text">Choose a score from 1 to 7, then leave a short note if you want to share feedback.</p>
+          <div class="rating-buttons" role="group" aria-label="Rate this blog from 1 to 7">
+            <button class="rating-button" data-rating="1">1</button>
+            <button class="rating-button" data-rating="2">2</button>
+            <button class="rating-button" data-rating="3">3</button>
+            <button class="rating-button" data-rating="4">4</button>
+            <button class="rating-button" data-rating="5">5</button>
+            <button class="rating-button" data-rating="6">6</button>
+            <button class="rating-button" data-rating="7">7</button>
+          </div>
+          <div class="comment-box">
+            <textarea placeholder="Optional comment"></textarea>
+            <button type="button">Submit feedback</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="footer">
+      The Saturday Blog • Minimal weekly editorial design • Black, white, and paper tones only
+    </section>
+  </div>
+
+  <script>
+    const ratingButtons = document.querySelectorAll('.rating-button');
+    ratingButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        ratingButtons.forEach((b) => b.classList.remove('active'));
+        button.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
